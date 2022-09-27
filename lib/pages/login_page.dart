@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/utils/routes.dart';
 
 // ignore: use_key_in_widget_constructors
-class LoginPage extends StatelessWidget {
-  // const loginPage({super.key});
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
 
+class _LoginPageState extends State<LoginPage> {
+  // const loginPage({super.key});
+  String name = "";
+  bool buttonPressed = false;
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -16,9 +23,9 @@ class LoginPage extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
               const SizedBox(height: 20.0),
-              const Text(
-                "Login Page",
-                style: TextStyle(
+              Text(
+                "Welcome $name",
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -34,6 +41,10 @@ class LoginPage extends StatelessWidget {
                         hintText: "Enter Username",
                         labelText: "Username",
                       ),
+                      onChanged: (value) {
+                        name = value;
+                        setState(() {});
+                      },
                     ),
                     TextFormField(
                       obscureText: true,
@@ -43,16 +54,51 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 40.0),
-                    ElevatedButton(
-                      style: TextButton.styleFrom(
-                          minimumSize: const Size(120, 40)),
-                      onPressed: () {
-                        // ignore: avoid_print
-                        // print("Hi, Flutter");
-                        Navigator.pushNamed(context, "/home");
+                    InkWell(
+                      onTap: () {
+                        // print("Login button pressed");
+                        // Navigator.pushNamed(context, MyRoutes.homeRoute);
+                        setState(
+                          () {
+                            buttonPressed = true;
+                          },
+                        );
                       },
-                      child: const Text("Login"),
+                      child: AnimatedContainer(
+                        duration: const Duration(seconds: 1),
+                        width: buttonPressed ? 50 : 150,
+                        height: 40,
+                        alignment: Alignment.center,
+                        // ignore: sort_child_properties_last
+                        child: buttonPressed
+                            ? const Icon(Icons.done, color: Colors.white)
+                            : const Text(
+                                "Login",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                        decoration: BoxDecoration(
+                          color: Colors.deepPurple,
+                          // shape: buttonPressed
+                          //     ? BoxShape.circle
+                          //     : BoxShape.rectangle,
+                          borderRadius:
+                              BorderRadius.circular(buttonPressed ? 50 : 8),
+                        ),
+                      ),
                     ),
+                    // ElevatedButton(
+                    //   style: TextButton.styleFrom(
+                    //       minimumSize: const Size(120, 40)),
+                    //   onPressed: () {
+                    //     // ignore: avoid_print
+                    //     // print("Hi, Flutter");
+                    //     Navigator.pushNamed(context, "/home");
+                    //   },
+                    //   child: const Text("Login"),
+                    // ),
                   ],
                 ),
               )
