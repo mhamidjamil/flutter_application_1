@@ -55,14 +55,16 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 40.0),
                     InkWell(
-                      onTap: () {
+                      onTap: () async {
                         // print("Login button pressed");
-                        // Navigator.pushNamed(context, MyRoutes.homeRoute);
                         setState(
                           () {
                             buttonPressed = true;
                           },
                         );
+                        await Future.delayed(const Duration(seconds: 1));
+                        // ignore: use_build_context_synchronously
+                        Navigator.pushNamed(context, MyRoutes.homeRoute);
                       },
                       child: AnimatedContainer(
                         duration: const Duration(seconds: 1),
