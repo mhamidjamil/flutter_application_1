@@ -7,26 +7,29 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-final _formKey = GlobalKey<FormState>();
-moveToHome(BuildContext context) async {
-  // print("Login button pressed");
-  setState(
-    () {
-      buttonPressed = true;
-    },
-  );
-  await Future.delayed(const Duration(seconds: 1));
-  // ignore: use_build_context_synchronously
-  await Navigator.pushNamed(context, MyRoutes.homeRoute);
-  setState(() {
-    buttonPressed = false;
-  });
-}
 
 class _LoginPageState extends State<LoginPage> {
   // const loginPage({super.key});
   String name = "";
   bool buttonPressed = false;
+  final _formKey = GlobalKey<FormState>();
+  moveToHome(BuildContext context) async {
+    // print("Login button pressed");
+    if (_formKey.currentState!.validate()) {
+      setState(
+        () {
+          buttonPressed = true;
+        },
+      );
+      await Future.delayed(const Duration(seconds: 1));
+      // ignore: use_build_context_synchronously
+      await Navigator.pushNamed(context, MyRoutes.homeRoute);
+      setState(() {
+        buttonPressed = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -59,6 +62,13 @@ class _LoginPageState extends State<LoginPage> {
                           hintText: "Enter Username",
                           labelText: "Username",
                         ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Username cant be empty";
+                          } else {
+                            return null;
+                          }
+                        },
                         onChanged: (value) {
                           name = value;
                           setState(() {});
@@ -70,6 +80,15 @@ class _LoginPageState extends State<LoginPage> {
                           hintText: "Enter Password",
                           labelText: "Password",
                         ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "password cant be empty";
+                          } else if (value.length < 6) {
+                            return "Mind your password length";
+                          } else {
+                            return null;
+                          }
+                        },
                       ),
                       const SizedBox(height: 40.0),
                       Material(
